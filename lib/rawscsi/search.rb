@@ -13,7 +13,7 @@ module Rawscsi
         raise "Unknown argument type"
       end
 
-      response = send_request_to_aws(query)
+      response = send_request_to_aws(query, options[:headers] || {})
       results = results_container(response)
 
       if raw
@@ -37,9 +37,9 @@ module Rawscsi
       ].join
     end
 
-    def send_request_to_aws(query)
+    def send_request_to_aws(query, headers = {})
       url_query = url(query)
-      HTTParty.get(url_query)
+      HTTParty.get(url_query, headers: headers)
     end
 
     def results_container(response)
